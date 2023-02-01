@@ -4,21 +4,27 @@ pragma solidity >=0.8.0 <0.9.0;
 contract BitLog {
 
     mapping(bytes32 => uint256) private _commitId;
+    mapping(uint256 => address) private _commitAuthor;
     mapping(uint256 => uint256) private _commitTime;
     mapping(address => uint256) private _commits;
 
     event AddCommitEvent(address addr_);
 
-    function addCommit(uint256 commitId_) public returns (bytes32) {
-        bytes32 _hash = keccak256(abi.encodePacked(msg.sender, _commits[msg.sender]++));
+    function addCommit(uint256 commitId_, address author_) public returns (bytes32) {
+        bytes32 _hash = keccak256(abi.encodePacked(author_, _commits[author_]++));
         _commitId[_hash] = commitId_;
+        _commitAuthor[commitId_] = author_;
         _commitTime[commitId_] = block.timestamp;
-        emit AddCommitEvent(msg.sender);
+        emit AddCommitEvent(author_);
         return _hash;
     }
 
     function getCommitId(bytes32 commitId_) public view returns (uint256) {
         return _commitId[commitId_];
+    }
+
+    function getCommitAuthor(uint256 commit_) public view returns (address) {
+        return _commitAuthor[commit_];
     }
 
     function getCommitTime(uint256 commit_) public view returns (uint256) {
