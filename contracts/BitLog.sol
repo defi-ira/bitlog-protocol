@@ -8,14 +8,14 @@ contract BitLog {
     mapping(uint256 => uint256) private _commitTime;
     mapping(address => uint256) private _commits;
 
-    event AddCommitEvent(address addr_);
+    event AddCommitEvent(address sender_, address addr_);
 
     function addCommit(uint256 commitId_, address author_) public returns (bytes32) {
         bytes32 _hash = keccak256(abi.encodePacked(author_, _commits[author_]++));
         _commitId[_hash] = commitId_;
         _commitAuthor[commitId_] = author_;
         _commitTime[commitId_] = block.timestamp;
-        emit AddCommitEvent(author_);
+        emit AddCommitEvent(msg.sender, author_);
         return _hash;
     }
 
