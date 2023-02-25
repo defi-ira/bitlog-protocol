@@ -3,7 +3,7 @@ const { BN } = require('bn.js');
 
 const BitLog = artifacts.require('BitLog');
 
-contract('BitLot', (accounts) => {
+contract('BitLog', (accounts) => {
     const [owner, user1, user2, user3, user4, user5] = accounts;
 
     it('should accept new commits', async() => {
